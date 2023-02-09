@@ -8,8 +8,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/getPokemon", async (req, res) => {
-  const { query } = req;
-  const idRamdom = query.idRamdom;
+  const idRamdom = Math.floor(Math.random() * 151) + 1;
 
   let pokemonNft = {
     name: "",
@@ -33,10 +32,12 @@ app.get("/getPokemon", async (req, res) => {
     });
   });
 
-  let buf = Buffer.from(JSON.stringify(pokemonNft), "base64");
-  buf = buf.toString("base64");
+  let buf = Buffer.from(JSON.stringify(pokemonNft)).toString("base64");
 
-  let metadata = { uri: `data:application/json;base64,${buf}`, id: idRamdom };
+  let metadata = {
+    uri: `data:application/json;base64,${buf}`,
+    id: idRamdom,
+  };
 
   res.set("Access-Control-Allow-Origin", "*");
   res.send(metadata);
