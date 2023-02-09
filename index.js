@@ -33,10 +33,13 @@ app.get("/getPokemon", async (req, res) => {
     });
   });
 
-  pokemonNft = { ...pokemonNft };
+  let buf = Buffer.from(JSON.stringify(pokemonNft), "base64");
+  buf = buf.toString("base64");
+
+  let metadata = { uri: `data:application/json;base64,${buf}`, id: idRamdom };
 
   res.set("Access-Control-Allow-Origin", "*");
-  res.send(pokemonNft);
+  res.send(metadata);
 });
 
 app.listen(PORT, () => {
