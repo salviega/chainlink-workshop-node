@@ -10,7 +10,6 @@ app.use(express.json());
 app.get("/getPokemon", async (req, res) => {
   const { query } = req;
   const idRamdom = query.idRamdom;
-  console.log("idRamdom: ", idRamdom);
 
   let pokemonNft = {
     name: "",
@@ -26,13 +25,15 @@ app.get("/getPokemon", async (req, res) => {
 
   pokemonNft.name = data.name;
   pokemonNft.image = data.sprites.front_default;
-  pokemonNft.attributes = data.types;
 
-  const types = pokemonNft.attributes
-    .map((attribute) => attribute.type.name)
-    .join(", ");
+  data.types.map((type) => {
+    pokemonNft.attributes.push({
+      trait_type: "Base",
+      value: type.type.name,
+    });
+  });
 
-  pokemonNft = { ...pokemonNft, types };
+  pokemonNft = { ...pokemonNft };
 
   res.set("Access-Control-Allow-Origin", "*");
   res.send(pokemonNft);
